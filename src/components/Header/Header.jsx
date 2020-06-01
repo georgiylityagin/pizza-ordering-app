@@ -1,8 +1,9 @@
 import React from 'react';
-import {NavLink, Link} from 'react-router-dom';
-import Container from '@material-ui/core/Container';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
+import Badge from '@material-ui/core/Badge';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -21,11 +22,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({numberOfItems}) => {
   const classes = useStyles();
 
   return (
-    <AppBar position="static" className={classes.header}>
+    <AppBar position="sticky" className={classes.header}>
       <div className="container">
         <Toolbar>
           <div className="header-brand">
@@ -54,7 +55,11 @@ const Header = () => {
           <Button
             variant="contained"
             color="primary"
-            endIcon={<ShoppingCart />}
+            endIcon={
+              <Badge color="secondary" badgeContent={numberOfItems}>
+                <ShoppingCart />
+              </Badge>
+            }
           >Cart</Button>
         </Toolbar>
       </div>
@@ -62,4 +67,10 @@ const Header = () => {
   )
 };
 
-export default Header;
+const mapStateToProps = ({cart}) => ({
+  numberOfItems: cart.numberOfItems
+});
+
+const HeaderConnected = connect(mapStateToProps, {})(Header);
+
+export default HeaderConnected;

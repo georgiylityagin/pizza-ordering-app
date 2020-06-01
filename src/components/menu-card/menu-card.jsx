@@ -1,4 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import {
+  addItem,
+  removeItem,
+  increaseQuantity,
+  decreaseQuantity,
+  calculateTotalPrice,
+  calculateNumberOfItems} from '../../redux/actions/cart';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -9,19 +17,75 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import './menu-card.scss';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   formControl: {
     minWidth: 120,
   },
 }));
 
-const MenuCard = ({category, imageId, title, ingredients, volume, price}) => {
+const MenuCard = ({
+  id,
+  category,
+  imageId,
+  title,
+  ingredients,
+  volume,
+  price,
+  items,
+  addItem,
+  removeItem,
+  increaseQuantity,
+  decreaseQuantity,
+  calculateTotalPrice,
+  calculateNumberOfItems
+}) => {
   const classes = useStyles();
   const [size, setSize] = useState('small');
+  const [quantity, setQuantity] = useState({});
 
   const handleChange = (event) => {
     setSize(event.target.value);
   };
+
+  const handleAddItem = () => {
+    addItem({
+      id,
+      title,
+      size,
+      imageId,
+      price: price[size]
+    });
+    calculateNumberOfItems();
+    calculateTotalPrice();
+  };
+
+  const handleIncrease = () => {
+    increaseQuantity(id, size);
+    calculateNumberOfItems();
+    calculateTotalPrice();
+  };
+
+  const handleDecrease = () => {
+    if (quantity[size] === 1) {
+      removeItem(id, size);
+      setQuantity({...quantity, [size]: 0});
+    } else {
+      decreaseQuantity(id, size);
+    }
+    calculateNumberOfItems();
+    calculateTotalPrice();
+  }
+
+
+  useEffect(() => {
+   let currentItem = items.filter(item => item.id === id && item.size === size);
+
+   if (currentItem.length > 0) {
+     setQuantity({...quantity, [size]: currentItem[0].quantity});
+   }
+
+   console.log(items)
+  }, [items, id, size]);
 
   return (
     <Paper className="menu-item">
@@ -39,7 +103,7 @@ const MenuCard = ({category, imageId, title, ingredients, volume, price}) => {
         </Typography>
         {
           ingredients && (
-            <Typography variant="body2" component="p">
+            <Typography variant="body2" component="p" color="secondary">
               {ingredients}
             </Typography>
           )
@@ -81,28 +145,60 @@ const MenuCard = ({category, imageId, title, ingredients, volume, price}) => {
 
           <div className="menu-item__price">
             <div className="menu-item__price-dollars">
-              {(price[size] || price).toFixed(2)} &#36;
+              {(price[size]).toFixed(2)} &#36;
             </div>
             <div className="menu-item__price-euro">
-              {(price[size] * 0.9 || price * 0.9).toFixed(2)} &euro;
+              {(price[size] * 0.9).toFixed(2)} &euro;
             </div>
           </div>
         </div>
+
         <div className="menu-item__actions">
           <Button
             className="submit-btn"
             variant="outlined"
             color='primary'
-          >Add to Cart</Button>
-          <div className="menu-item__quantity">
-            <button className="change-quantity">-</button>
-              <span className="quantity-value">0</span>
-            <button className="change-quantity">+</button>
-          </div>
+            disabled={quantity[size] ? true : false}
+            onClick={handleAddItem}
+          >
+            {quantity[size] ? 'In cart' : 'Add to cart'}
+          </Button>
+
+          {
+            quantity[size]
+              ? <div className="menu-item__quantity">
+                  <button
+                    className="change-quantity"
+                    onClick={handleDecrease}
+                  >-</button>
+                    <span className="quantity-value">
+                      {quantity[size]}
+                    </span>
+                  <button
+                    className="change-quantity"
+                    onClick={handleIncrease}
+                  >+</button>
+                </div>
+              : null
+          }
+
         </div>
       </div>
     </Paper>
   )
 };
 
-export default MenuCard;
+const mapStateToProps = ({cart}) => ({
+  items: cart.items
+});
+
+const MenuCardConnected = connect(mapStateToProps, {
+  addItem,
+  removeItem,
+  increaseQuantity,
+  decreaseQuantity,
+  calculateTotalPrice,
+  calculateNumberOfItems
+})(MenuCard);
+
+export default MenuCardConnected;
