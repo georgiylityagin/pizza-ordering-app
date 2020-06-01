@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MainPage from './pages/Main/MainPage';
+import CartPage from './pages/Cart/CartPage';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
@@ -21,6 +22,7 @@ function App() {
       <Router>
         <Switch>
           <Route path='/' exact component={MainPage}/>
+          <Route path='/cart' component={CartPage} />
         </Switch>
       </Router>
     </ThemeProvider>

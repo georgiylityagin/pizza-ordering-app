@@ -22,8 +22,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Header = ({numberOfItems}) => {
+const Header = ({children}) => {
   const classes = useStyles();
+  // const history = useHistory();
 
   return (
     <>
@@ -41,10 +42,9 @@ const Header = ({numberOfItems}) => {
               />
             </NavLink>
 
-              <NavLink to="/" className="header-brand__title">
-                CALL <span>OF</span> PIZZA
-              </NavLink>
-  
+            <NavLink to="/" className="header-brand__title">
+              CALL <span>OF</span> PIZZA
+            </NavLink>
           </div>
 
           <Button
@@ -54,15 +54,8 @@ const Header = ({numberOfItems}) => {
             style={{marginRight: '15px'}}
           >Sign in</Button>
 
-          <Button
-            variant="contained"
-            color="primary"
-            endIcon={
-              <Badge color="secondary" badgeContent={numberOfItems}>
-                <ShoppingCart />
-              </Badge>
-            }
-          >Cart</Button>
+          {children}
+
         </Toolbar>
       </div>
     </AppBar>

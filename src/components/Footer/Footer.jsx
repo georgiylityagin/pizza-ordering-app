@@ -9,7 +9,7 @@ const grey = blueGrey[500];
 const Footer = () => (
   <Box className="footer" bgcolor={grey} color="#fff">
     <Typography align="center" variant="body2">
-      &copy; 2020 CALL OF PIZZA. All rights reserved
+      &copy; 2020 Georgiy Lityagin. Test assignment for Innoscripta International.
     </Typography>
   </Box>
 );
