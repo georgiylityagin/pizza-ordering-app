@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 
 import './Header.scss';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   header: {
     marginBottom: '20px'
   },
@@ -26,6 +26,8 @@ const Header = ({numberOfItems}) => {
   const classes = useStyles();
 
   return (
+    <>
+    <div id="back-to-top-anchor" />
     <AppBar position="sticky" className={classes.header}>
       <div className="container">
         <Toolbar>
@@ -64,6 +66,7 @@ const Header = ({numberOfItems}) => {
         </Toolbar>
       </div>
     </AppBar>
+    </>
   )
 };
 
