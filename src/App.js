@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MainPage from './pages/Main/MainPage';
 import CartPage from './pages/Cart/CartPage';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import { authUser } from './redux/actions/firebase';
+import { auth } from './firebase/firebase.utils';
 
 const theme = createMuiTheme({
   palette: {
@@ -16,7 +19,18 @@ const theme = createMuiTheme({
   },
 });
 
-function App() {
+function App({authUser}) {
+
+  useEffect(() => {
+    const unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+      authUser(user);
+    });
+
+    return () => {
+      unsubscribeFromAuth();
+    }
+  }, [authUser]);
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -29,4 +43,6 @@ function App() {
   );
 }
 
-export default App;
+const AppConnected = connect(null, {authUser})(App);
+
+export default AppConnected;

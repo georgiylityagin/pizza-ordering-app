@@ -2,12 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import { unauthUser } from '../../redux/actions/firebase'
+import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
 
 import './Header.scss';
 
@@ -22,9 +25,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Header = ({children}) => {
+const Header = ({currentUser, unauthUser, children}) => {
   const classes = useStyles();
   // const history = useHistory();
+
+  const handleSignOut = () => {
+    auth.signOut();
+    unauthUser();
+  }
 
   return (
     <>
@@ -47,12 +55,23 @@ const Header = ({children}) => {
             </NavLink>
           </div>
 
-          <Button
+          {currentUser ? (
+            <Button
             variant="contained"
             color="primary"
-            endIcon={<PersonIcon />}
+            endIcon={<ExitToAppIcon />}
             style={{marginRight: '15px'}}
-          >Sign in</Button>
+            onClick={handleSignOut}
+          >Sign out</Button>   
+            ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              endIcon={<PersonIcon />}
+              style={{marginRight: '15px'}}
+              onClick={signInWithGoogle}
+            >Sign in with google</Button>
+            )}
 
           {children}
 
@@ -63,10 +82,13 @@ const Header = ({children}) => {
   )
 };
 
-const mapStateToProps = ({cart}) => ({
-  numberOfItems: cart.numberOfItems
+const mapStateToProps = ({cart, firebase}) => ({
+  numberOfItems: cart.numberOfItems,
+  currentUser: firebase.currentUser
 });
 
-const HeaderConnected = connect(mapStateToProps, {})(Header);
+const HeaderConnected = connect(mapStateToProps, {
+  unauthUser
+})(Header);
 
 export default HeaderConnected;
