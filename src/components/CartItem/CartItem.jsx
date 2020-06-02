@@ -62,6 +62,8 @@ const CartItem = ({
         </div>
       </div>
 
+      <div style={{flexGrow: 1}}></div>
+
         <div className="cart-item__controls">
           <button
             className="cart-item__change-quantity"

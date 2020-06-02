@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 780px;
+    max-width: 670px;
     margin: 0 auto;
     margin-bottom: 30px;
   }
@@ -23,11 +23,16 @@
   }
 
   &__total-price {
-    align-self: flex-start;
+    align-self: flex-end;
+    text-align: right;
     margin: 0;
     margin-bottom: 10px;
     font-size: 22px;
     color: #455a64;
+
+    div {
+      font-size: 14px;
+    }
 
     &:last-of-type {
       margin-bottom: 40px;
@@ -39,10 +44,50 @@
   }
 
   &__button-group {
-    align-self: start;
+    align-self: center;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 
-    button:first-child {
-      margin-right: 50px;
+    button:only-child {
+      margin: 0 auto;
+    }
+  }
+}
+
+@media only screen and (max-width: 812px) {
+  .cart{  
+    &-content {
+      max-width: 500px;
+      margin: 0 auto;
+      margin-bottom: 30px;
+    }
+
+    &-list {
+      border-bottom: none;
+      padding: 0;
+    }
+
+    &-title {
+      font-size: 24px;
+    }
+
+    &__total-price {
+      align-self: center;
+      text-align: center;
+      font-size: 18px;
+  
+      div {
+        font-size: 12px;
+      }
+    }
+
+    &__button-group {
+      flex-direction: column;
+      
+      button:first-child {
+        margin-bottom: 15px;
+      }
     }
   }
 }

@@ -84,7 +84,6 @@ const MenuCard = ({
      setQuantity({...quantity, [size]: currentItem[0].quantity});
    }
 
-   console.log(items)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, id, size]);
 
@@ -94,7 +93,7 @@ const MenuCard = ({
         <img
           src={`./img/${imageId}.jpg`}
           alt={title}
-          loading="lazy"
+          // loading="lazy"
           width="220px"
         />
       </div>

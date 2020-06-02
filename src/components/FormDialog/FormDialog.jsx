@@ -1,0 +1,100 @@
+import React, { useState } from 'react';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
+import './FormDialog.scss';
+
+const FormDialog = () => {
+  const [open, setOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('cash');
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handlePayment = (event) => {
+    setPaymentMethod(event.target.value);
+  };
+
+  return (
+    <div>
+      <Button
+        size="large"
+        color="primary"
+        variant="contained"
+        onClick={handleClickOpen}
+      >
+        Make an order
+      </Button>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Leave us your contacts</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <p>
+              Please, fill your contact information in the little form below.<br />
+              We will deliver your order in 1 hour!
+            </p>
+          </DialogContentText>
+          <TextField
+            required
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Your name"
+            type="text"
+            fullWidth
+          />
+          <TextField
+            required
+            autoFocus
+            margin="dense"
+            id="address"
+            label="Address"
+            type="text"
+            fullWidth
+          />
+          <TextField
+            required
+            autoFocus
+            margin="dense"
+            id="email"
+            label="E-mail"
+            type="email"
+            fullWidth
+          />
+          <FormControl component="fieldset" className="form-dialog__payment">
+            <FormLabel component="legend">Payment Method</FormLabel>
+            <RadioGroup row aria-label="payment" name="payment1" value={paymentMethod} onChange={handlePayment}>
+              <FormControlLabel value="cash" control={<Radio />} label="Cash" />
+              <FormControlLabel value="credit card" control={<Radio />} label="Credit card" />
+            </RadioGroup>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={handleClose} color="primary" variant="contained">
+            Confirm order
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
+}
+
+export default FormDialog;

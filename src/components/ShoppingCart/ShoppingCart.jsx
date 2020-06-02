@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import CartItem from '../CartItem/CartItem';
 import Button from '@material-ui/core/Button';
+import CartItem from '../CartItem/CartItem';
+import FormDialog from '../FormDialog/FormDialog';
 
 import {
   removeItem,
@@ -23,6 +24,11 @@ const ShoppingCart = ({
   calculateTotalPrice
 }) => {
   const history = useHistory();
+  const [isFormShown, setFormShown] = useState(false);
+
+  const handleOrderClick = () => {
+    setFormShown(true)
+  }
 
   return (
       <div className="cart-content">
@@ -39,12 +45,12 @@ const ShoppingCart = ({
               ))}
             </ul>
             <h4 className="cart__total-price">
-              Delivery Cost &mdash; {deliveryCost.toFixed(2)} &#36; 
-              <span style={{fontSize: '16px'}}> or {(deliveryCost*0.9).toFixed(2)} &euro;</span>
+              Delivery Cost &mdash; {deliveryCost.toFixed(2)} &#36;
+              <div>{(deliveryCost*0.9).toFixed(2)} &euro;</div>
             </h4>
             <h4 className="cart__total-price">
-              Total Price &mdash; {total.toFixed(2)} &#36; &#32; 
-              <span style={{fontSize: '16px'}}> or {(total*0.9).toFixed(2)} &euro;</span>
+              Total Price &mdash; {total.toFixed(2)} &#36;
+              <div>{(total*0.9).toFixed(2)} &euro;</div>
             </h4>
           </>
           ) : (
@@ -53,25 +59,7 @@ const ShoppingCart = ({
             </h4>
         )}
 
-        {numberOfItems ? (
-          <div className="cart__button-group">
-            <Button
-              size="large"
-              color="primary"
-              variant="contained"
-            >
-              Make an order
-            </Button>
-            <Button
-              size="large"
-              color="primary"
-              variant="outlined"
-              onClick={() => history.push('/')}
-            >
-              Back to menu
-            </Button>
-          </div>
-        ) : (
+        <div className="cart__button-group">
           <Button
             size="large"
             color="primary"
@@ -80,7 +68,12 @@ const ShoppingCart = ({
           >
             Back to menu
           </Button>
-        )}
+
+          {numberOfItems ? (
+            <FormDialog />
+          ) : null}  
+        </div>
+
       </div>
   )
 };
