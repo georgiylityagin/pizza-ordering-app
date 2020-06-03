@@ -4,7 +4,8 @@ import {
   INCREASE_QUANTITY,
   DECREASE_QUANTITY,
   CALCULATE_TOTAL_PRICE,
-  CALCULATE_NUMBER_OF_ITEMS
+  CALCULATE_NUMBER_OF_ITEMS,
+  SUBMIT_ORDER
 } from '../types';
 
 const initialState = {
@@ -58,6 +59,13 @@ const cartReducer = (state = initialState, action) => {
         ...state,
         numberOfItems: calcNumberOfItems(state)
       };
+    case SUBMIT_ORDER:
+      return {
+        ...state,
+        items: [],
+        numberOfItems: 0,
+        totalPrice: 0
+      }
     default:
       return state;
   }

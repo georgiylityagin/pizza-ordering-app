@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,12 +13,17 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import { submitOrder, fetchHistory, authUser } from '../../redux/actions/firebase';
 
 import './FormDialog.scss';
 
-const FormDialog = () => {
+const FormDialog = ({userAuth, items, totalPrice, submitOrder, fetchHistory}) => {
+  const history = useHistory();
   const [open, setOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('cash');
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [email, setEmail] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,6 +35,36 @@ const FormDialog = () => {
 
   const handlePayment = (event) => {
     setPaymentMethod(event.target.value);
+  };
+
+  const handleInputChange = (event) => {
+    switch (event.target.id) {
+      case 'name':
+        setName(event.target.value);
+        break;
+      case 'address':
+        setAddress(event.target.value);
+        break;
+      case 'email':
+        setEmail(event.target.value);
+        break;
+      default:
+    }
+  }
+
+  const handleSubmit = () => {
+    const contacts = {
+      name,
+      address,
+      email,
+      paymentMethod
+    };
+
+    submitOrder({userAuth, items, totalPrice, contacts});
+
+    // fetchHistory(userAuth);
+
+    history.push('/history');
   };
 
   return (
@@ -56,24 +93,24 @@ const FormDialog = () => {
             id="name"
             label="Your name"
             type="text"
+            onChange={handleInputChange}
             fullWidth
           />
           <TextField
             required
-            autoFocus
             margin="dense"
             id="address"
             label="Address"
             type="text"
+            onChange={handleInputChange}
             fullWidth
           />
           <TextField
             required
-            autoFocus
             margin="dense"
             id="email"
             label="E-mail"
-            type="email"
+            onChange={handleInputChange}
             fullWidth
           />
           <FormControl component="fieldset" className="form-dialog__payment">
@@ -88,13 +125,24 @@ const FormDialog = () => {
           <Button onClick={handleClose} color="primary" variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary" variant="contained">
+          <Button onClick={handleSubmit} color="primary" variant="contained">
             Confirm order
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   )
-}
+};
 
-export default FormDialog;
+const mapStateToProps = ({cart, firebase}) => ({
+  items: cart.items,
+  totalPrice: cart.totalPrice,
+  userAuth: firebase.currentUser
+});
+
+const FormDialogConnected = connect(mapStateToProps, {
+  submitOrder,
+  fetchHistory
+})(FormDialog);
+
+export default FormDialogConnected;

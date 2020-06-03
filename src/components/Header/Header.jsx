@@ -1,14 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HistoryIcon from '@material-ui/icons/History';
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { unauthUser } from '../../redux/actions/firebase'
 import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
 
@@ -25,9 +27,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Header = ({currentUser, unauthUser, children}) => {
+const Header = ({currentUser, unauthUser, numberOfItems}) => {
   const classes = useStyles();
-  // const history = useHistory();
+  const history = useHistory();
 
   const handleSignOut = () => {
     auth.signOut();
@@ -55,25 +57,45 @@ const Header = ({currentUser, unauthUser, children}) => {
             </NavLink>
           </div>
 
-          {currentUser ? (
-            <Button
-            variant="contained"
-            color="primary"
-            endIcon={<ExitToAppIcon />}
-            style={{marginRight: '15px'}}
-            onClick={handleSignOut}
-          >Sign out</Button>   
-            ) : (
+          {currentUser ? (       
+            <>
+              <Button
+                variant="contained"
+                color="primary"
+                endIcon={<HistoryIcon style={{fontSize: 24 }} />}
+                style={{marginRight: '15px'}}
+                onClick={() => history.push('/history')}
+              ><span className="button__text">History</span></Button>
+
+              <Button
+                variant="contained"
+                color="primary"
+                endIcon={<ExitToAppIcon style={{fontSize: 24}} />}
+                style={{marginRight: '15px'}}
+                onClick={handleSignOut}
+              >Sign out</Button>
+            </>
+            ) : ( currentUser === undefined ? 
+            <CircularProgress color="accent" style={{marginRight: 25}} /> :
             <Button
               variant="contained"
               color="primary"
-              endIcon={<PersonIcon />}
+              endIcon={<PersonIcon style={{fontSize: 24}} />}
               style={{marginRight: '15px'}}
               onClick={signInWithGoogle}
             >Sign in with google</Button>
             )}
 
-          {children}
+          <Button
+          variant="contained"
+          color="primary"
+          endIcon={
+            <Badge color="secondary" badgeContent={numberOfItems}>
+              <ShoppingCart />
+            </Badge>
+          }
+          onClick={() => history.push('/cart')}
+        >Cart</Button>
 
         </Toolbar>
       </div>

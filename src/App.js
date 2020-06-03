@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 import MainPage from './pages/Main/MainPage';
 import CartPage from './pages/Cart/CartPage';
+import HistoryPage from './pages/History/HistoryPage';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { authUser } from './redux/actions/firebase';
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 const theme = createMuiTheme({
   palette: {
@@ -16,14 +19,28 @@ const theme = createMuiTheme({
     secondary: {
       main: '#455a64',
     },
+    accent: {
+      main: '#fff',
+    }
   },
 });
 
 function App({authUser}) {
 
   useEffect(() => {
-    const unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      authUser(user);
+    const unsubscribeFromAuth = auth.onAuthStateChanged(async userAuthInfo => {
+      if (userAuthInfo) {
+        const userRef = await createUserProfileDocument(userAuthInfo);
+
+        userRef.onSnapshot(snapShot => {
+          authUser({
+            id: snapShot.id,
+            ...snapShot.data()
+          });
+        });
+      }
+
+      authUser(userAuthInfo);
     });
 
     return () => {
@@ -34,10 +51,15 @@ function App({authUser}) {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Switch>
-          <Route path='/' exact component={MainPage}/>
-          <Route path='/cart' component={CartPage} />
-        </Switch>
+        <div className="page">
+          <Header />
+          <Switch>
+            <Route path='/' exact component={MainPage} />
+            <Route path='/cart' component={CartPage} />
+            <Route path='/history' component={HistoryPage} />
+          </Switch>
+          <Footer />
+        </div>
       </Router>
     </ThemeProvider>
   );

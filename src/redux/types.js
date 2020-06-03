@@ -9,3 +9,5 @@ export const CALCULATE_NUMBER_OF_ITEMS = 'CALCULATE_NUMBER_OF_ITEMS';
 // Firebase action types
 export const AUTH_USER = 'AUTH_USER';
 export const UNAUTH_USER = 'UNAUTH_USER';
+export const SUBMIT_ORDER = 'SUBMIT_ORDER';
+export const FETCH_HISTORY = 'FETCH_HISTORY';
