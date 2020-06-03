@@ -73,17 +73,17 @@ const Header = ({currentUser, unauthUser, numberOfItems}) => {
                 endIcon={<ExitToAppIcon style={{fontSize: 24}} />}
                 style={{marginRight: '15px'}}
                 onClick={handleSignOut}
-              >Sign out</Button>
+              ><span className="button__text">Sign out</span></Button>
             </>
             ) : ( currentUser === undefined ? 
-            <CircularProgress color="accent" style={{marginRight: 25}} /> :
+            <CircularProgress color="accent" style={{marginRight: 35}} /> :
             <Button
               variant="contained"
               color="primary"
               endIcon={<PersonIcon style={{fontSize: 24}} />}
               style={{marginRight: '15px'}}
               onClick={signInWithGoogle}
-            >Sign in with google</Button>
+            ><span className="button__text">Sign in with google</span></Button>
             )}
 
           <Button

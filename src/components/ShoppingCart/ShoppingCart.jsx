@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
@@ -18,17 +18,8 @@ const ShoppingCart = ({
   numberOfItems,
   total,
   deliveryCost,
-  removeItem,
-  increaseQuantity,
-  decreaseQuantity,
-  calculateTotalPrice
 }) => {
   const history = useHistory();
-  const [isFormShown, setFormShown] = useState(false);
-
-  const handleOrderClick = () => {
-    setFormShown(true)
-  }
 
   return (
       <div className="cart-content">

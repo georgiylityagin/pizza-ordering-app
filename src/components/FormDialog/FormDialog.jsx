@@ -13,11 +13,11 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import { submitOrder, fetchHistory, authUser } from '../../redux/actions/firebase';
+import { submitOrder, submitOrderUnauth } from '../../redux/actions/firebase';
 
 import './FormDialog.scss';
 
-const FormDialog = ({userAuth, items, totalPrice, submitOrder, fetchHistory}) => {
+const FormDialog = ({userAuth, items, totalPrice, submitOrder, submitOrderUnauth}) => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('cash');
@@ -60,9 +60,9 @@ const FormDialog = ({userAuth, items, totalPrice, submitOrder, fetchHistory}) =>
       paymentMethod
     };
 
-    submitOrder({userAuth, items, totalPrice, contacts});
-
-    // fetchHistory(userAuth);
+    userAuth
+      ? submitOrder({userAuth, items, totalPrice, contacts})
+      : submitOrderUnauth();
 
     history.push('/history');
   };
@@ -142,7 +142,7 @@ const mapStateToProps = ({cart, firebase}) => ({
 
 const FormDialogConnected = connect(mapStateToProps, {
   submitOrder,
-  fetchHistory
+  submitOrderUnauth
 })(FormDialog);
 
 export default FormDialogConnected;

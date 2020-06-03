@@ -33,6 +33,10 @@ code {
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
+
+  &-sm {
+    max-width: 840px !important;
+  }
 }
 
 @media only screen and (max-width: 1280px) {

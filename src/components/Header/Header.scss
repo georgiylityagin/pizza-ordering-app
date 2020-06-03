@@ -32,5 +32,9 @@
 
   .button__text {
     display: none;
+
+    & ~ span {
+      margin: 0 !important;
+    }
   }
 }
