@@ -17,7 +17,13 @@ import { submitOrder, submitOrderUnauth } from '../../redux/actions/firebase';
 
 import './FormDialog.scss';
 
-const FormDialog = ({userAuth, items, totalPrice, submitOrder, submitOrderUnauth}) => {
+const FormDialog = ({
+  userAuth,
+  items,
+  totalPrice,
+  submitOrder,
+  submitOrderUnauth
+}) => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('cash');
@@ -50,7 +56,7 @@ const FormDialog = ({userAuth, items, totalPrice, submitOrder, submitOrderUnauth
         break;
       default:
     }
-  }
+  };
 
   const handleSubmit = () => {
     const contacts = {
@@ -61,7 +67,7 @@ const FormDialog = ({userAuth, items, totalPrice, submitOrder, submitOrderUnauth
     };
 
     userAuth
-      ? submitOrder({userAuth, items, totalPrice, contacts})
+      ? submitOrder({ userAuth, items, totalPrice, contacts })
       : submitOrderUnauth();
 
     history.push('/history');
@@ -70,71 +76,86 @@ const FormDialog = ({userAuth, items, totalPrice, submitOrder, submitOrderUnauth
   return (
     <div>
       <Button
-        size="large"
-        color="primary"
-        variant="contained"
+        size='large'
+        color='primary'
+        variant='contained'
         onClick={handleClickOpen}
       >
         Make an order
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Leave us your contacts</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby='form-dialog-title'
+      >
+        <DialogTitle id='form-dialog-title'>Leave us your contacts</DialogTitle>
         <DialogContent>
           <DialogContentText>
             <p>
-              Please, fill your contact information in the little form below.<br />
+              Please, fill your contact information in the little form below.
+              <br />
               We will deliver your order in 1 hour!
             </p>
           </DialogContentText>
           <TextField
             required
             autoFocus
-            margin="dense"
-            id="name"
-            label="Your name"
-            type="text"
+            margin='dense'
+            id='name'
+            label='Your name'
+            type='text'
             onChange={handleInputChange}
             fullWidth
           />
           <TextField
             required
-            margin="dense"
-            id="address"
-            label="Address"
-            type="text"
+            margin='dense'
+            id='address'
+            label='Address'
+            type='text'
             onChange={handleInputChange}
             fullWidth
           />
           <TextField
             required
-            margin="dense"
-            id="email"
-            label="E-mail"
+            margin='dense'
+            id='email'
+            label='E-mail'
             onChange={handleInputChange}
             fullWidth
           />
-          <FormControl component="fieldset" className="form-dialog__payment">
-            <FormLabel component="legend">Payment Method</FormLabel>
-            <RadioGroup row aria-label="payment" name="payment1" value={paymentMethod} onChange={handlePayment}>
-              <FormControlLabel value="cash" control={<Radio />} label="Cash" />
-              <FormControlLabel value="credit card" control={<Radio />} label="Credit card" />
+          <FormControl component='fieldset' className='form-dialog__payment'>
+            <FormLabel component='legend'>Payment Method</FormLabel>
+            <RadioGroup
+              row
+              aria-label='payment'
+              name='payment1'
+              value={paymentMethod}
+              onChange={handlePayment}
+            >
+              <FormControlLabel value='cash' control={<Radio />} label='Cash' />
+              <FormControlLabel
+                value='credit card'
+                control={<Radio />}
+                label='Credit card'
+              />
             </RadioGroup>
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="outlined">
+          <Button onClick={handleClose} color='primary' variant='outlined'>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary" variant="contained">
+          <Button onClick={handleSubmit} color='primary' variant='contained'>
             Confirm order
           </Button>
         </DialogActions>
       </Dialog>
     </div>
-  )
+  );
 };
 
-const mapStateToProps = ({cart, firebase}) => ({
+const mapStateToProps = ({ cart, firebase }) => ({
   items: cart.items,
   totalPrice: cart.totalPrice,
   userAuth: firebase.currentUser

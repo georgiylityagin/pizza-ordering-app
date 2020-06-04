@@ -1,4 +1,4 @@
-.cart{
+.cart {
   &-content {
     display: flex;
     flex-direction: column;
@@ -56,7 +56,7 @@
 }
 
 @media only screen and (max-width: 812px) {
-  .cart{  
+  .cart {
     &-content {
       max-width: 500px;
       margin: 0 auto;
@@ -76,7 +76,7 @@
       align-self: center;
       text-align: center;
       font-size: 18px;
-  
+
       div {
         font-size: 12px;
       }
@@ -84,7 +84,7 @@
 
     &__button-group {
       flex-direction: column;
-      
+
       button:first-child {
         margin-bottom: 15px;
       }

@@ -7,24 +7,24 @@ import {
   CALCULATE_NUMBER_OF_ITEMS
 } from '../types';
 
-export const addItem = ({id, title, size, imageId, price}) => ({
+export const addItem = ({ id, title, size, imageId, price }) => ({
   type: ADD_ITEM,
-  payload: {id, title, size, imageId, price, quantity: 1}
+  payload: { id, title, size, imageId, price, quantity: 1 }
 });
 
 export const removeItem = (id, size) => ({
   type: REMOVE_ITEM,
-  payload: {id, size}
+  payload: { id, size }
 });
 
 export const increaseQuantity = (id, size) => ({
   type: INCREASE_QUANTITY,
-  payload: {id, size}
+  payload: { id, size }
 });
 
 export const decreaseQuantity = (id, size) => ({
   type: DECREASE_QUANTITY,
-  payload: {id, size}
+  payload: { id, size }
 });
 
 export const calculateTotalPrice = () => ({

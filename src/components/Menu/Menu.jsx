@@ -3,31 +3,30 @@ import MenuCard from '../MenuCard/MenuCard';
 
 import './menu.scss';
 
-const Menu = ({items}) => {
-
+const Menu = ({ items }) => {
   return (
     <>
-      <h2 className="menu-title">Pizza</h2>
+      <h2 className='menu-title'>Pizza</h2>
 
-      <div className="menu">
+      <div className='menu'>
         {items
-          .filter(item => item.category === 'pizza')
-          .map(item => (
+          .filter((item) => item.category === 'pizza')
+          .map((item) => (
             <MenuCard key={item.id} {...item} />
           ))}
       </div>
 
-      <h2 className="menu-title">Drinks</h2>
+      <h2 className='menu-title'>Drinks</h2>
 
-      <div className="menu">
+      <div className='menu'>
         {items
-          .filter(item => item.category === 'drinks')
-          .map(item => (
+          .filter((item) => item.category === 'drinks')
+          .map((item) => (
             <MenuCard key={item.id} {...item} />
           ))}
       </div>
     </>
-  )
-}
+  );
+};
 
 export default React.memo(Menu);

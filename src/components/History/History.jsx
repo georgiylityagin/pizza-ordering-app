@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -14,63 +14,66 @@ import './History.scss';
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
-  },
+    minWidth: 650
+  }
 });
 
-const History = ({userAuth, ordersHistory, fetchHistory}) => {
+const History = ({ userAuth, ordersHistory, fetchHistory }) => {
   const classes = useStyles();
 
   useEffect(() => {
     if (userAuth) {
       fetchHistory(userAuth);
     }
-  }, [fetchHistory, userAuth])
+  }, [fetchHistory, userAuth]);
 
   return (
     <>
-      <h2 className="history__title">History of your orders:</h2>
+      <h2 className='history__title'>History of your orders:</h2>
 
-      {ordersHistory && ordersHistory.length > 0 ?
+      {ordersHistory && ordersHistory.length > 0 ? (
         <TableContainer component={Paper}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell align="left">Date</TableCell>
+                <TableCell align='left'>Date</TableCell>
                 <TableCell>Order details</TableCell>
-                <TableCell align="right">Payment Method</TableCell>
-                <TableCell align="right">Total Price, $</TableCell>
+                <TableCell align='right'>Payment Method</TableCell>
+                <TableCell align='right'>Total Price, $</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {ordersHistory.map((order) => (
                 <TableRow key={order.id}>
-                  <TableCell align="left">{order.date}</TableCell>
+                  <TableCell align='left'>{order.date}</TableCell>
                   <TableCell>
-                    {order.items.map(item => (
+                    {order.items.map((item) => (
                       <div>
                         {`${item.quantity} ${item.title} (${item.size})`}
                       </div>
-                      ))}
+                    ))}
                   </TableCell>
-                  <TableCell align="right">{order.contacts.paymentMethod}</TableCell>
-                  <TableCell align="right">{order.totalPrice}</TableCell>
+                  <TableCell align='right'>
+                    {order.contacts.paymentMethod}
+                  </TableCell>
+                  <TableCell align='right'>{order.totalPrice}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </TableContainer> : null}
+        </TableContainer>
+      ) : null}
     </>
-  )
-}
+  );
+};
 
-const mapStateToProps = ({firebase}) => ({
+const mapStateToProps = ({ firebase }) => ({
   userAuth: firebase.currentUser,
   ordersHistory: firebase.history
 });
 
 const HistoryConnected = connect(mapStateToProps, {
   fetchHistory
-})(History)
+})(History);
 
 export default HistoryConnected;

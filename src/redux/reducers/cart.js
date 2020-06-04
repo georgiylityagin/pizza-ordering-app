@@ -16,7 +16,6 @@ const initialState = {
   freeDeliveryThreshold: 20
 };
 
-
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ITEM:
@@ -27,27 +26,30 @@ const cartReducer = (state = initialState, action) => {
     case REMOVE_ITEM:
       return {
         ...state,
-        items: state.items.filter(item => (
-          item.id !== action.payload.id || item.size !== action.payload.size
-        ))
+        items: state.items.filter(
+          (item) =>
+            item.id !== action.payload.id || item.size !== action.payload.size
+        )
       };
     case INCREASE_QUANTITY:
       return {
         ...state,
-        items: state.items.map(item => (
+        items: state.items.map((item) =>
           item.id === action.payload.id && item.size === action.payload.size
-            ? {...item, quantity: item.quantity + 1}
+            ? { ...item, quantity: item.quantity + 1 }
             : item
-        ))
+        )
       };
     case DECREASE_QUANTITY:
       return {
         ...state,
-        items: state.items.map(item => (
-          item.id === action.payload.id && item.size === action.payload.size
-            ? {...item, quantity: item.quantity - 1}
-            : item
-        )).filter(item => item.quantity >= 0)
+        items: state.items
+          .map((item) =>
+            item.id === action.payload.id && item.size === action.payload.size
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          )
+          .filter((item) => item.quantity >= 0)
       };
     case CALCULATE_TOTAL_PRICE:
       return {
@@ -65,34 +67,33 @@ const cartReducer = (state = initialState, action) => {
         items: [],
         numberOfItems: 0,
         totalPrice: 0
-      }
+      };
     default:
       return state;
   }
 };
 
-
-function calcTotalPrice({items, deliveryCost, freeDeliveryThreshold}) {
-  let total = items.reduce((acc, item) => (
-    acc += item.price * item.quantity
-  ), 0);
+function calcTotalPrice({ items, deliveryCost, freeDeliveryThreshold }) {
+  let total = items.reduce(
+    (acc, item) => (acc += item.price * item.quantity),
+    0
+  );
 
   if (total < freeDeliveryThreshold) {
     total += deliveryCost;
   }
 
   return total;
-};
+}
 
-function calcNumberOfItems({items}) {
+function calcNumberOfItems({ items }) {
   let count = 0;
 
   for (let item of items) {
-   count += item.quantity; 
+    count += item.quantity;
   }
 
   return count;
 }
-
 
 export default cartReducer;

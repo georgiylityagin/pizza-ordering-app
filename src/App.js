@@ -16,48 +16,49 @@ import { items } from './menu-items-list.json';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#e64a19',
+      main: '#e64a19'
     },
     secondary: {
-      main: '#455a64',
+      main: '#455a64'
     },
     accent: {
-      main: '#fff',
+      main: '#fff'
     }
-  },
+  }
 });
 
-function App({authUser}) {
-
+function App({ authUser }) {
   useEffect(() => {
-    const unsubscribeFromAuth = auth.onAuthStateChanged(async userAuthInfo => {
-      if (userAuthInfo) {
-        const userRef = await createUserProfileDocument(userAuthInfo);
+    const unsubscribeFromAuth = auth.onAuthStateChanged(
+      async (userAuthInfo) => {
+        if (userAuthInfo) {
+          const userRef = await createUserProfileDocument(userAuthInfo);
 
-        userRef.onSnapshot(snapShot => {
-          authUser({
-            id: snapShot.id,
-            ...snapShot.data()
+          userRef.onSnapshot((snapShot) => {
+            authUser({
+              id: snapShot.id,
+              ...snapShot.data()
+            });
           });
-        });
-      }
+        }
 
-      authUser(userAuthInfo);
-    });
+        authUser(userAuthInfo);
+      }
+    );
 
     return () => {
       unsubscribeFromAuth();
-    }
+    };
   }, [authUser]);
 
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <div className="page">
+        <div className='page'>
           <Header />
           <Switch>
             <Route path='/' exact>
-              <MainPage items={items}/>
+              <MainPage items={items} />
             </Route>
             <Route path='/cart' component={CartPage} />
             <Route path='/history' component={HistoryPage} />
@@ -69,6 +70,6 @@ function App({authUser}) {
   );
 }
 
-const AppConnected = connect(null, {authUser})(App);
+const AppConnected = connect(null, { authUser })(App);
 
 export default AppConnected;

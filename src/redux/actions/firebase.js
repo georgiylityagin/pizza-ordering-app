@@ -1,11 +1,6 @@
-import {
-  AUTH_USER,
-  UNAUTH_USER,
-  SUBMIT_ORDER,
-  FETCH_HISTORY
-} from '../types';
+import { AUTH_USER, UNAUTH_USER, SUBMIT_ORDER, FETCH_HISTORY } from '../types';
 
-import {firestore} from '../../firebase/firebase.utils';
+import { firestore } from '../../firebase/firebase.utils';
 
 export const authUser = (currentUser) => ({
   type: AUTH_USER,
@@ -13,35 +8,40 @@ export const authUser = (currentUser) => ({
 });
 
 export const unauthUser = () => ({
-  type: UNAUTH_USER,
+  type: UNAUTH_USER
 });
 
 export const submitOrderUnauth = () => ({
   type: SUBMIT_ORDER
 });
 
-export const submitOrder = ({userAuth, items, totalPrice, contacts}) => (dispatch) => {
+export const submitOrder = ({ userAuth, items, totalPrice, contacts }) => (
+  dispatch
+) => {
   const date = new Date().toLocaleString();
 
-  firestore.doc(`users/${userAuth.id}`)
+  firestore
+    .doc(`users/${userAuth.id}`)
     .collection('orders')
-    .add({items, date, totalPrice, contacts})
+    .add({ items, date, totalPrice, contacts })
     .then(() => {
-      dispatch({type: SUBMIT_ORDER});
+      dispatch({ type: SUBMIT_ORDER });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log('error placing order: ', error.message);
-    })
+    });
 };
 
 export const fetchHistory = (userAuth) => (dispatch) => {
-  firestore.doc(`users/${userAuth.id}`)
-    .collection('orders').get()
+  firestore
+    .doc(`users/${userAuth.id}`)
+    .collection('orders')
+    .get()
     .then((querySnapshot) => {
       const history = [];
 
-      querySnapshot.forEach(doc => {
-        const {date, items, totalPrice, contacts} = doc.data();
+      querySnapshot.forEach((doc) => {
+        const { date, items, totalPrice, contacts } = doc.data();
 
         history.push({
           id: doc.id,
@@ -50,13 +50,13 @@ export const fetchHistory = (userAuth) => (dispatch) => {
           totalPrice,
           contacts
         });
-      })
+      });
 
       console.log(history);
 
-      dispatch({type: FETCH_HISTORY, payload: history})
+      dispatch({ type: FETCH_HISTORY, payload: history });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log('error fetching history: ', error.message);
-    })
+    });
 };
