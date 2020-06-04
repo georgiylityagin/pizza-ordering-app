@@ -102,4 +102,4 @@ const CartItemConnected = connect(null, {
   calculateNumberOfItems
 })(CartItem);
 
-export default CartItemConnected;
+export default React.memo(CartItemConnected);

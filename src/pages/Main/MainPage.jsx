@@ -1,14 +1,14 @@
 import React from 'react';
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import ScrollTop from '../../components/ScrollTop/scroll-top';
+import ScrollTop from '../../components/ScrollTop/ScrollTop';
 import Menu from '../../components/Menu/Menu';
 
-const MainPage = () => (
+const MainPage = ({items}) => (
   <>
     <div className="mainContent">
       <div className="container">
-        <Menu />
+        <Menu items={items}/>
       </div>
     </div>
 
@@ -20,4 +20,4 @@ const MainPage = () => (
   </>
 );
 
-export default MainPage;
+export default React.memo(MainPage);

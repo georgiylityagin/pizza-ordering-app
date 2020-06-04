@@ -11,6 +11,8 @@ import { ThemeProvider } from '@material-ui/styles';
 import { authUser } from './redux/actions/firebase';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
+import { items } from './menu-items-list.json';
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -54,7 +56,9 @@ function App({authUser}) {
         <div className="page">
           <Header />
           <Switch>
-            <Route path='/' exact component={MainPage} />
+            <Route path='/' exact>
+              <MainPage items={items}/>
+            </Route>
             <Route path='/cart' component={CartPage} />
             <Route path='/history' component={HistoryPage} />
           </Switch>

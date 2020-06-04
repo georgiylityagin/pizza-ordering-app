@@ -83,4 +83,4 @@ const ShoppingCartConnected = connect(mapStateToProps, {
   calculateTotalPrice
 })(ShoppingCart);
 
-export default ShoppingCartConnected;
+export default React.memo(ShoppingCartConnected);

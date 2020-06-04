@@ -36,4 +36,4 @@ const ScrollTop = ({ children }) => {
   );
 }
 
-export default ScrollTop;
+export default React.memo(ScrollTop);

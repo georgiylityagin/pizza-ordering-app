@@ -113,4 +113,4 @@ const HeaderConnected = connect(mapStateToProps, {
   unauthUser
 })(Header);
 
-export default HeaderConnected;
+export default React.memo(HeaderConnected);

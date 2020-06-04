@@ -1,12 +1,10 @@
 import React from 'react';
-import MenuCard from '../menu-card/menu-card';
+import MenuCard from '../MenuCard/MenuCard';
 
 import './menu.scss';
 
-import { items } from './menu-items.json';
+const Menu = ({items}) => {
 
-
-const Menu = () => {
   return (
     <>
       <h2 className="menu-title">Pizza</h2>
@@ -32,5 +30,4 @@ const Menu = () => {
   )
 }
 
-
-export default Menu;
+export default React.memo(Menu);
