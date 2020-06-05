@@ -74,7 +74,7 @@ const FormDialog = ({
   };
 
   return (
-    <div>
+    <>
       <Button
         size='large'
         color='primary'
@@ -151,7 +151,7 @@ const FormDialog = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 
