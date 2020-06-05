@@ -12,6 +12,10 @@ Your also can sign in with your google account. In this case the details of your
 
 App is persistent - the cart state is stored in browser sessionStorage, so you won't lose your cart items on page update.
 
+App is fully adapted for mobile devices.
+
+Added few tests for redux logic.
+
 The images of pizzas were taken from [Dodo pizza website](https://dodopizza.ru/).
 
 **Used technologies:**
@@ -30,4 +34,9 @@ Use these commands to run the app locally:
 git clone https://github.com/georgiylityagin/pizza-ordering-app.git
 cd pizza-ordering-app && npm i
 npm run start
+```
+
+To run unit tests: 
+```
+npm run test
 ```
