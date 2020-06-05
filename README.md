@@ -10,6 +10,8 @@ App allows you to choose pizzas and drinks from menu, put it into a cart, change
 
 Your also can sign in with your google account. In this case the details of your order will be saved to firebase db. If you sign in, the history of your orders will be also availble.
 
+App is persistent - the cart state is stored in browser sessionStorage, so you won't lose your cart items on page update.
+
 The images of pizzas were taken from [Dodo pizza website](https://dodopizza.ru/).
 
 **Used technologies:**
